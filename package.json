@@ -1,0 +1,25 @@
+{
+  "name": "lunchly",
+  "version": "1.0.0",
+  "description": "Kayak Hackathon app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "~4.9.x"
+  },
+  "engines": {
+    "node": "0.12.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:taylorc93/kayak-hack.git"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "ISC"
+}
