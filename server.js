@@ -40,28 +40,6 @@ app.get('/requests', function(req, res){
 	});
 });
 
-app.get('/setup', function(req, res){
-	pg.connect(connString, function(err, client, done){
-		// client.query("create table requests (
-		// 	id serial NOT NULL PRIMARY KEY,
-		// 	info varchar(255),
-		// 	location varchar(255),
-		// 	time timestamptz,
-		// 	taken boolean,
-		// 	requester_id integer,
-		// 	driver_id integer
-		// 	)", function(err, result){
-		// 	console.log('created requests');
-		// });
-
-		client.query("create table requests (id serial NOT NULL PRIMARY KEY, name varchar(255), isDriver boolean, number varchar(20))", function(err, result){
-			console.log('created requests');
-		});
-
-		done();
-	});	
-});
-
 // Takes in an info string, a location string, and a time string and inserts them
 // into the database. 
 app.post('/request', function(req, res){
