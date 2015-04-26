@@ -45,7 +45,7 @@ app.get('/requests', function(req, res){
 app.post('/request', function(req, res){
 	pg.connect(connString, function(err, client, done){
 		if (!err){
-			client.query("INSERT INTO requests (info, location, time, taken, requester_id, driver_id) VALUES ($1, $2, $3, $4, $5, $6)", [req.body.info, req.body.location, req.body.time, false, 0, 0], function(err, result) {
+			client.query("INSERT INTO requests (info, pickup_location, dropoff_location, time, taken, requester_id, driver_id) VALUES ($1, $2, $3, $4, $5, $6)", [req.body.info, req.body.pickup_location, req.body.dropoff_location, req.body.time, false, 0, null], function(err, result) {
 
 				if (!err){
 					res.send("OK");
