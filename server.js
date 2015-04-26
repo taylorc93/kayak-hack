@@ -1,7 +1,10 @@
 var express = require('express');
 var app = express();
 var pg = require('pg');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var request = require('request');
+
+
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
@@ -92,6 +95,43 @@ app.get('/requests', function(req, res){
 			console.log("Error!");
 			res.send(500);
 			done();
+		}
+	});
+});
+
+app.post('/take/:id', function(req, res){
+	var options = {
+	  url: 'https://api.parse.com/1/push',
+	  method: "post",
+	  headers: {
+	    'X-Parse-Application-Id': 'n8ql4mSfUgwBkfHgmNw3QLR3Ad99w8PaiYhiyIyP',
+	    'X-Parse-REST-API-Key': "up6UYAk9urGCVrzw2l2P7eJCQoAE2Ze9t05HIxwa",
+	    'Content-Type': 'application/json'
+	  },
+	  json: true,
+	  body: {
+			where: {
+        deviceType: "ios"
+      },
+      data: {
+        alert: "Hello World!"
+      }
+	  }
+	};
+
+	pg.connect(connString, function(err, client, done){
+		if (!err){
+			client.query('UPDATE requests SET taken=true WHERE id=$1', [req.params.id], function(err, result){
+				if (!err){
+					request.(options, function(err, res, body){
+						// Do nothing for now
+					});
+				} else {
+					cnosole.log("Error!");
+				}
+			})
+		} else {
+			console.log("Error!");
 		}
 	});
 });
