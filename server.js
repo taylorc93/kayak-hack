@@ -49,7 +49,7 @@ function getValidRequests(results, location, distance){
 		var x2 = coords2.lng - coords1.lng;
 		var dLon = toRad(x2);  
 		var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + 
-		                Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
+		                Math.cos(toRad(coords1.lat)) * Math.cos(toRad(coords2.lat)) * 
 		                Math.sin(dLon / 2) * Math.sin(dLon / 2);  
 		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
 		var d = R * c;
