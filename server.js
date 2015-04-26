@@ -16,21 +16,75 @@ app.get('/', function(request, res) {
   res.send('Hello World!');
 });
 
+function toRad(x) {
+   return x * Math.PI / 180;
+}
+
+function parseCoords(coordPair){
+	var coords = {
+		lat: 0,
+		lng: 0
+	};
+
+	var tokens = coordPair.split(",");
+	console.log(tokens);
+
+	coords.lat = parseFloat(tokens[0]);
+	coords.lng = parseFloat(tokens[1]);
+
+	return coords
+}
+
+function getValidRequests(results, location, distance){
+	var coords1 = parseCoords(location);
+	var radius = parseFloat(distance);
+	var R = 6371; // km 
+
+	var valid = []
+
+	for (var i = 0; i < results.length; i++){
+		coords2 = parseCoords(results[i].pickup_location);
+		var x1 = coords2.lat - coords1.lat;
+		var dLat = x1.toRad();  
+		var x2 = coords2.lng - coords1.lng;
+		var dLon = x2.toRad();  
+		var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + 
+		                Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
+		                Math.sin(dLon / 2) * Math.sin(dLon / 2);  
+		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
+		var d = R * c;
+
+		if (d <= radius){
+			valid.push(results[i]);
+		}
+	}
+	return valid;
+}
+
 // Takes a location in a query string and returns all the results sorted
 // by time first and then by location in JSON format. 
 app.get('/requests', function(req, res){
 	var location = req.query.location;
+	var distance = req.query.distance;
+	var valid_requests = []
 
 	pg.connect(connString, function(err, client, done){
 		if (!err){
 			client.query('SELECT * from requests', function(err, result){
+				done();
+
+				if (location && distance) {
+					valid_requests = getValidRequests(result.rows, location, distance);
+				} else {
+					valid_requests = result.rows;
+				}
+
 				if (!err){
-					res.send(JSON.stringify(result.rows));
+					res.send(JSON.stringify(valid_requests));
 				} else {
 					console.log("Couldn't select");
 					res.send(500);
 				}
-				done();
 			});
 		} else {
 			console.log("Error!");
@@ -62,17 +116,7 @@ app.post('/request', function(req, res){
 			done();
 		}
 	});
-
 });
-
-app.get('/location/:id', function(req, res){
-
-});
-
-app.post('/location/:id', function(req, res){
-
-});
-
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'));
