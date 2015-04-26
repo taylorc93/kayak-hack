@@ -45,9 +45,9 @@ function getValidRequests(results, location, distance){
 	for (var i = 0; i < results.length; i++){
 		coords2 = parseCoords(results[i].pickup_location);
 		var x1 = coords2.lat - coords1.lat;
-		var dLat = x1.toRad();  
+		var dLat = toRad(x1);  
 		var x2 = coords2.lng - coords1.lng;
-		var dLon = x2.toRad();  
+		var dLon = toRad(x2);  
 		var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + 
 		                Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
 		                Math.sin(dLon / 2) * Math.sin(dLon / 2);  
