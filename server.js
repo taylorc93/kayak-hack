@@ -123,7 +123,7 @@ app.post('/take/:id', function(req, res){
 		if (!err){
 			client.query('UPDATE requests SET taken=true WHERE id=$1', [req.params.id], function(err, result){
 				if (!err){
-					request.(options, function(err, res, body){
+					request(options, function(err, res, body){
 						// Do nothing for now
 					});
 				} else {
