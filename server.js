@@ -99,6 +99,31 @@ app.get('/requests', function(req, res){
 	});
 });
 
+app.post('/ready', function(req, res){
+	var options = {
+	  url: 'https://api.parse.com/1/push',
+	  method: "post",
+	  headers: {
+	    'X-Parse-Application-Id': 'n8ql4mSfUgwBkfHgmNw3QLR3Ad99w8PaiYhiyIyP',
+	    'X-Parse-REST-API-Key': "up6UYAk9urGCVrzw2l2P7eJCQoAE2Ze9t05HIxwa",
+	    'Content-Type': 'application/json'
+	  },
+	  json: true,
+	  body: {
+			where: {
+        deviceType: "ios"
+      },
+      data: {
+        alert: "Your request has been completed and is waiting for you at the pickup location!"
+      }
+	  }
+	};
+
+	request(options,function(err, res, body){
+		res.send("OK");
+	});
+});
+
 app.post('/take/:id', function(req, res){
 	var options = {
 	  url: 'https://api.parse.com/1/push',
