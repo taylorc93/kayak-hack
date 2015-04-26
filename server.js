@@ -114,7 +114,7 @@ app.post('/take/:id', function(req, res){
         deviceType: "ios"
       },
       data: {
-        alert: "Hello World!"
+        alert: "Your request has been taken by a driver!"
       }
 	  }
 	};
@@ -126,12 +126,15 @@ app.post('/take/:id', function(req, res){
 					request(options, function(err, res, body){
 						// Do nothing for now
 					});
+					res.send("OK");
 				} else {
-					cnosole.log("Error!");
+					console.log("Error!");
+					res.send(500);
 				}
 			})
 		} else {
 			console.log("Error!");
+			res.send(500);
 		}
 	});
 });
